@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -21,25 +20,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { FileUploader } from "../shareable/FileUploader";
 import { useState } from "react";
 import { useUploadThing } from "@/lib/uploadthing";
-import { CornerDownLeft } from "lucide-react";
 
 interface updateProductParams {
-  product: getAllProductsParams;
+  type?: "Edit";
+  product?: string;
 }
 
-const UpdateProductForm = ({ product }: updateProductParams) => {
+const ProductForm = ({ product, type }: updateProductParams) => {
   const path = usePathname();
   const router = useRouter();
   const { startUpload } = useUploadThing("imageUploader");
   const [files, setFiles] = useState<File[]>([]);
+
+  const parsedProduct = product && JSON.parse(product || "");
+
   const form = useForm<z.infer<typeof AddProductFormSchema>>({
     resolver: zodResolver(AddProductFormSchema),
     defaultValues: {
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      category: product.category,
-      image: product.image,
+      title: parsedProduct?.title || "",
+      description: parsedProduct?.description || "",
+      price: parsedProduct?.price || "",
+      category: parsedProduct?.category || "",
+      image: parsedProduct?.image || [],
     },
   });
 
@@ -54,22 +56,33 @@ const UpdateProductForm = ({ product }: updateProductParams) => {
     }
     try {
       const { title, description, price, category } = data;
-      const updateProd = await updateProduct({
-        id: product.id,
-        title: title,
-        description: description,
-        price: price,
-        category: category,
-        image: image,
-        path: path,
-      });
-      console.log(updateProd);
+      if (type === "Edit") {
+        const updateProd = await updateProduct({
+          id: parsedProduct.id,
+          title: title,
+          description: description,
+          price: price,
+          category: category,
+          image: image,
+          path: path,
+        });
+        console.log(updateProd);
+      } else {
+        const newProduct = await createProduct({
+          title: title,
+          description: description,
+          price: price,
+          category: category,
+          image: image,
+          path: path,
+        });
+        console.log(newProduct);
+      }
       form.reset();
       router.push("/dashboard/products");
     } catch (error) {
       console.log(error, " onSubmit prdocut form error");
     }
-    console.log(data);
   }
 
   return (
@@ -148,10 +161,14 @@ const UpdateProductForm = ({ product }: updateProductParams) => {
           )}
         />
         <Button type="submit">
-          {form.formState.isSubmitting ? "Submitting..." : "Submit"}
+          {form.formState.isSubmitting ? (
+            <>{type === "Edit" ? "Editing..." : "Posting..."}</>
+          ) : (
+            <>{type === "Edit" ? "Edit Product" : "Add Product"}</>
+          )}
         </Button>
       </form>
     </Form>
   );
 };
-export default UpdateProductForm;
+export default ProductForm;

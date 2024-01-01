@@ -41,7 +41,7 @@ const ProductTable = ({ productsProps }: productProps) => {
         {productsProps.map((product) => (
           <TableRow key={product.id}>
             <TableCell>{product.title}</TableCell>
-            <TableCell>{product.description}</TableCell>
+            <TableCell className="line-clamp-1">{product.description}</TableCell>
             <TableCell>{product.price}</TableCell>
             <TableCell>{product.category}</TableCell>
             <TableCell>

@@ -1,6 +1,5 @@
-import UpdateProductForm from "@/components/forms/UpdateProduct";
+import ProductForm from "@/components/forms/ProductForm";
 import { findProduct } from "@/lib/actions/product.action";
-import { privateDecrypt } from "crypto";
 import React from "react";
 
 type Params = {
@@ -17,7 +16,7 @@ const UpdateProductPage = async ({ params: { id } }: Params) => {
   }
   return (
     <div>
-      <UpdateProductForm product={product} />
+      <ProductForm type="Edit" product={JSON.stringify(product)} />
     </div>
   );
 };

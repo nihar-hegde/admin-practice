@@ -2,7 +2,6 @@ import React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -16,7 +15,7 @@ interface Product {
   id: string;
   title: string;
   description: string;
-  price: string;
+  price: number;
   category: string;
   image: string[];
 }

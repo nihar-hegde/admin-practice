@@ -5,8 +5,33 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+type ProductType = {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  image: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+
 const ProductsPage = async () => {
   const allProducts = await getAllProducts();
+  let formattedProduct: ProductType[] = [];
+  if (allProducts) {
+    // TypeScript knows that allProducts is not undefined here
+    formattedProduct = allProducts.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      price: item.price.toNumber(),
+      category: item.category.category,
+      image: item.image,
+      createdAt: item.createdAt.toString(),
+      updatedAt: item.updatedAt.toString(),
+    }));
+  }
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
@@ -19,7 +44,7 @@ const ProductsPage = async () => {
         </Link>
       </div>
       {allProducts ? (
-        <ProductTable productsProps={allProducts} />
+        <ProductTable productsProps={formattedProduct} />
       ) : (
         <div>No products found</div>
       )}

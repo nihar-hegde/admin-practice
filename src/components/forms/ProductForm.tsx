@@ -2,7 +2,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { FileUploader } from "../shareable/FileUploader";
 import { useState } from "react";
 import { useUploadThing } from "@/lib/uploadthing";
+import CategoryDropDown from "../CategoryDropDown";
 
 interface updateProductParams {
   type?: "Edit";
@@ -39,7 +39,7 @@ const ProductForm = ({ product, type }: updateProductParams) => {
     defaultValues: {
       title: parsedProduct?.title || "",
       description: parsedProduct?.description || "",
-      price: parsedProduct?.price || "",
+      price: parseInt(parsedProduct?.price) || 0,
       category: parsedProduct?.category || "",
       image: parsedProduct?.image || [],
     },
@@ -137,7 +137,10 @@ const ProductForm = ({ product, type }: updateProductParams) => {
             <FormItem>
               <FormLabel>Category</FormLabel>
               <FormControl>
-                <Input placeholder="Enter the prdocut Category" {...field} />
+                <CategoryDropDown
+                  onChangeHandler={field.onChange}
+                  value={field.value}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -160,7 +163,7 @@ const ProductForm = ({ product, type }: updateProductParams) => {
             </FormItem>
           )}
         />
-        <Button type="submit">
+        <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting ? (
             <>{type === "Edit" ? "Editing..." : "Posting..."}</>
           ) : (

@@ -10,7 +10,7 @@ export const createProduct = async (params: addProductsParam) => {
         title,
         description,
         price,
-        category,
+        categoryId: category,
         image,
       },
     });
@@ -22,7 +22,11 @@ export const createProduct = async (params: addProductsParam) => {
 
 export const getAllProducts = async () => {
   try {
-    const allProducts = await prismadb.product.findMany();
+    const allProducts = await prismadb.product.findMany({
+      include: {
+        category: true,
+      },
+    });
     return allProducts;
   } catch (error) {
     console.log(error, " :getAllProducts error");
@@ -83,7 +87,7 @@ export const updateProduct = async (params: updateProductParams) => {
         title,
         description,
         price,
-        category,
+        categoryId: category,
         image,
       },
     });

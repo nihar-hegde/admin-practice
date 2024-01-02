@@ -6,9 +6,7 @@ export const AddProductFormSchema = z.object({
   description: z.string().min(2, {
     message: "description must be at least 2 characters.",
   }),
-  price: z.string().min(1, {
-    message: "Price is required!",
-  }),
+  price: z.coerce.number().min(1, { message: "NUmber is required" }),
   category: z.string().min(1, {
     message: "Category is required",
   }),

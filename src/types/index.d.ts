@@ -7,7 +7,7 @@ interface addProductsParam {
   path: string;
 }
 interface getAllProductsParams {
-  id: number;
+  id: string;
   title: string;
   description: string;
   price: string;

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Pencil } from "lucide-react";
 
 interface Product {
-  id: number;
+  id: string;
   title: string;
   description: string;
   price: string;
@@ -41,17 +41,23 @@ const ProductTable = ({ productsProps }: productProps) => {
         {productsProps.map((product) => (
           <TableRow key={product.id}>
             <TableCell>{product.title}</TableCell>
-            <TableCell className="line-clamp-1">{product.description}</TableCell>
+            <TableCell className="line-clamp-1">
+              {product.description}
+            </TableCell>
             <TableCell>{product.price}</TableCell>
             <TableCell>{product.category}</TableCell>
             <TableCell>
-              <Link href={`/dashboard/products/${product.id}/update`}><Pencil className="h-4 w-4" /></Link>
+              <Link href={`/dashboard/products/${product.id}/update`}>
+                <Pencil className="h-4 w-4" />
+              </Link>
             </TableCell>
-            <TableCell><DeleteButton id={product.id} /></TableCell>
+            <TableCell>
+              <DeleteButton id={product.id} />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
-    </Table >
+    </Table>
   );
 };
 

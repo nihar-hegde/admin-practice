@@ -30,7 +30,7 @@ export const getAllProducts = async () => {
 };
 
 interface deleteProductProps {
-  id: number;
+  id: string;
   path: string;
 }
 
@@ -49,7 +49,7 @@ export const deleteProduct = async (props: deleteProductProps) => {
   }
 };
 
-export const findProduct = async (id: number) => {
+export const findProduct = async (id: string) => {
   try {
     const product = await prismadb.product.findUnique({
       where: {
@@ -62,7 +62,7 @@ export const findProduct = async (id: number) => {
   }
 };
 interface updateProductParams {
-  id: number;
+  id: string;
   title: string;
   description: string;
   price: string;

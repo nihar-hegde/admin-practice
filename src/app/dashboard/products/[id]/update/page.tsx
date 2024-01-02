@@ -9,8 +9,7 @@ type Params = {
 };
 
 const UpdateProductPage = async ({ params: { id } }: Params) => {
-  const idd = parseInt(id);
-  const product = await findProduct(idd);
+  const product = await findProduct(id);
   if (!product) {
     return <div>No product found</div>;
   }

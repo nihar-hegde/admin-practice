@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { deleteProduct } from "@/lib/actions/product.action";
 
 interface DeleteButtonProps {
-  id: number;
+  id: string;
 }
 const DeleteButton = (props: DeleteButtonProps) => {
   const pathname = usePathname();
